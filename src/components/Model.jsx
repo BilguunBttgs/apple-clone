@@ -1,3 +1,4 @@
+"use client";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ModelView from "./ModelView";
@@ -6,6 +7,7 @@ import { yellowImg } from "@/utils";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { View } from "@react-three/drei";
+import { models, sizes } from "@/constants";
 
 const Model = () => {
   const [size, setSize] = useState("small");
@@ -21,8 +23,8 @@ const Model = () => {
   const small = useRef(new THREE.Group());
   const large = useRef(new THREE.Group());
 
-  const [smallRotatin, setSmallRotation] = useState(0);
-  const [largeRotatin, setLargeRotation] = useState(0);
+  const [smallRotation, setSmallRotation] = useState(0);
+  const [largeRotation, setLargeRotation] = useState(0);
 
   useGSAP(() => {
     gsap.to("#heading", { y: 0, opacity: 1 });
@@ -45,7 +47,7 @@ const Model = () => {
               size={size}
             />
             <ModelView
-              index={1}
+              index={2}
               groupRef={large}
               gsapType="view2"
               controlRef={camereControlLarge}
@@ -63,9 +65,44 @@ const Model = () => {
                 right: 0,
                 overflow: "hidden",
               }}
+              eventSource={document.getElementById("root")}
             >
               <View.Port />
             </Canvas>
+          </div>
+          <div className="mx-auto w-full">
+            <p className="text-sm font-light text-center">{model.title}</p>
+            <div className="flex-center mt-4">
+              <ul className="color-container">
+                {models.map((item, index) => (
+                  <li
+                    key={index}
+                    className="w-6 h-6 rounded-full mx-2 cursor-pointer"
+                    style={{ backgroundColor: item.color[0] }}
+                    onClick={() => {
+                      setModel(item);
+                    }}
+                  ></li>
+                ))}
+              </ul>
+              <button className="size-btn-container ">
+                {sizes.map(({ label, value }) => (
+                  <span
+                    onClick={() => {
+                      setSize(value);
+                    }}
+                    style={{
+                      backgroundColor: size === value ? "white" : "transparent",
+                      color: size === value ? "black" : "white",
+                    }}
+                    className="size-btn"
+                    key={label}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </button>
+            </div>
           </div>
         </div>
       </div>
