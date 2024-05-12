@@ -4,9 +4,10 @@ import { heroVideo, smallHeroVideo } from "@/utils";
 import { useEffect, useState } from "react";
 
 const Hero = () => {
-  const [videoSrc, setVideoSrc] = useState(
-    window.innerWidth < 760 ? smallHeroVideo : heroVideo
-  );
+  const [videoSrc, setVideoSrc] = useState();
+  useEffect(() => {
+    setVideoSrc(window.innerWidth < 760 ? smallHeroVideo : heroVideo);
+  }, []);
   const handleVideoSrc = () => {
     if (window.innerWidth < 760) {
       setVideoSrc(smallHeroVideo);
